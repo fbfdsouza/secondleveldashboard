@@ -1,0 +1,13 @@
+.caseItem {
+  display: flex;
+  line-height: 25px;
+  font-weight: 400;
+}
+
+.priorityLevel {
+  margin-top: 3px;
+  margin-left: auto;
+  width: 12px;
+  height: 12px;
+  border-radius: 1.5px;
+}

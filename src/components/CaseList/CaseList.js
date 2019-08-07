@@ -1,7 +1,7 @@
 import React from "react";
 
-const CaseList = props => {
-  return <ul>{props.children}</ul>;
+const CaseList = ({ children }) => {
+  return <ul>{children}</ul>;
 };
 
 export default CaseList;
