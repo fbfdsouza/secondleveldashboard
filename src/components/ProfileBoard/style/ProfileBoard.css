@@ -4,6 +4,7 @@
   max-width: 210px;
   min-width: 190px;
   border-radius: 5px;
+  max-height: 220px;
 }
 
 .profile_container_content ul {
