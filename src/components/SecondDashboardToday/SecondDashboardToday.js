@@ -62,7 +62,7 @@ class SecondDashboardToday extends Component {
           <HighchartsReact highcharts={Highcharts} options={options} />
         </div>
         <ProfileBoardContainer>
-          <div class="dummy-graph" />
+          <div className="dummy-graph" />
           <ProfileBoard
             name="Priscila Castro"
             headerColor="#fee9fa"
