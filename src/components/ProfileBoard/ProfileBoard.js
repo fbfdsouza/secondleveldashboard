@@ -12,19 +12,48 @@ class ProfileBoard extends Component {
     super(props);
 
     this.state = {
-      cases: []
+      cases: null
     };
   }
 
   async componentDidMount() {
-    let casesData = await API.get("/all", {
+    console.log(this.props.name);
+    let casesData = await API.get("/cases", {
       params: {
         results: 1,
         inc: "caseNumber,analystName,clientName,casePriority"
       }
     });
-    console.log(casesData);
+
+    const analystCasesArray = casesData.data.filter(
+      el => el.analystName === this.props.name
+    );
+
+    console.log(analystCasesArray);
+    console.log(this.caseByAnalyst(analystCasesArray));
+    const html = this.caseByAnalyst(analystCasesArray);
+    console.log(html.toString);
+    this.setState({
+      cases: [1, 2, 3, 4, 5]
+    });
+
+    window.l = analystCasesArray;
   }
+
+  caseByAnalyst = analystCases => {
+    let html,
+      newHtml,
+      finalHtml = "";
+    analystCases.forEach(caseEl => {
+      html =
+        '<CaseItem caseNumber="%caseNumber%" caseClient="%clientName%" color="red" />';
+      newHtml = html.replace("%caseNumber%", caseEl.caseNumber);
+      newHtml = newHtml.replace("%clientName%", caseEl.clientName);
+      finalHtml += newHtml;
+    });
+
+    return `<CaseList>${finalHtml}</CaseList>`;
+  };
 
   render() {
     const settings = {
@@ -35,6 +64,7 @@ class ProfileBoard extends Component {
       slidesToScroll: 1,
       autoplay: true
     };
+
     const { children, name, headerColor, borderColor } = this.props;
     return (
       <div className="profile_container" style={{ border: borderColor }}>
@@ -59,15 +89,15 @@ class ProfileBoard extends Component {
               <CaseItem caseNumber="18077" caseClient="SHV" color="green" />
             </CaseList>
             <CaseList>
-              <CaseItem caseNumber="16888" caseClient="Dawnfoods" color="red" />
-              <CaseItem caseNumber="15432" caseClient="Reyes" color="red" />
-              <CaseItem caseNumber="14258" caseClient="CVI" color="orange" />
-              <CaseItem caseNumber="13251" caseClient="RNDC" color="green" />
+              <CaseItem caseNumber="16815" caseClient="Solar" color="red" />
+              <CaseItem caseNumber="17087" caseClient="PSP" color="red" />
+              <CaseItem caseNumber="17412" caseClient="Kof-Br" color="orange" />
               <CaseItem
-                caseNumber="1982"
-                caseClient="Pepsico-gtm"
+                caseNumber="17298"
+                caseClient="G.Simões"
                 color="green"
               />
+              <CaseItem caseNumber="18077" caseClient="SHV" color="green" />
             </CaseList>
           </Slider>
         </div>
