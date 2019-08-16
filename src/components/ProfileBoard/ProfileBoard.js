@@ -36,8 +36,22 @@ class ProfileBoard extends Component {
     return items;
   };
 
+  upToGroupOf5Cases = array => {
+    let groupOf5 = [],
+      size = 5,
+      caseListIndex = 0;
+
+    while (array.length > 0) {
+      groupOf5.push(
+        <CaseList key={caseListIndex}>{array.splice(0, size)}</CaseList>
+      );
+      caseListIndex++;
+    }
+
+    return groupOf5;
+  };
+
   async componentDidMount() {
-    console.log(this.props.name);
     let casesData = await API.get("/cases", {
       params: {
         results: 1,
@@ -49,11 +63,16 @@ class ProfileBoard extends Component {
       el => el.analystName === this.props.name
     );
 
+    window.g = analystCasesArray;
+
     this.setState({
       cases: analystCasesArray
     });
 
-    window.l = analystCasesArray;
+    window.s = this.state.cases;
+    const array = [...this.state.cases];
+
+    window.l = this.upToGroupOf5Cases(array);
   }
 
   render() {
@@ -78,7 +97,7 @@ class ProfileBoard extends Component {
         </div>
         <div className="profile_container_content">
           <Slider {...settings}>
-            <CaseList>{this.extractCases(this.state.cases)}</CaseList>
+            {this.upToGroupOf5Cases(this.extractCases(this.state.cases))}
           </Slider>
         </div>
       </div>
