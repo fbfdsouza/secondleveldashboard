@@ -12,9 +12,29 @@ class ProfileBoard extends Component {
     super(props);
 
     this.state = {
-      cases: null
+      cases: []
     };
   }
+
+  extractCases = array => {
+    const items = [];
+    if (array.length > 0) {
+      for (const [index, value] of array.entries()) {
+        items.push(
+          <CaseItem
+            key={index}
+            caseNumber={value.caseNumber}
+            caseClient={value.clientName}
+            color="red"
+          />
+        );
+      }
+    }
+
+    window.array = items;
+
+    return items;
+  };
 
   async componentDidMount() {
     console.log(this.props.name);
@@ -29,31 +49,12 @@ class ProfileBoard extends Component {
       el => el.analystName === this.props.name
     );
 
-    console.log(analystCasesArray);
-    console.log(this.caseByAnalyst(analystCasesArray));
-    const html = this.caseByAnalyst(analystCasesArray);
-    console.log(html.toString);
     this.setState({
-      cases: [1, 2, 3, 4, 5]
+      cases: analystCasesArray
     });
 
     window.l = analystCasesArray;
   }
-
-  caseByAnalyst = analystCases => {
-    let html,
-      newHtml,
-      finalHtml = "";
-    analystCases.forEach(caseEl => {
-      html =
-        '<CaseItem caseNumber="%caseNumber%" caseClient="%clientName%" color="red" />';
-      newHtml = html.replace("%caseNumber%", caseEl.caseNumber);
-      newHtml = newHtml.replace("%clientName%", caseEl.clientName);
-      finalHtml += newHtml;
-    });
-
-    return `<CaseList>${finalHtml}</CaseList>`;
-  };
 
   render() {
     const settings = {
@@ -77,28 +78,7 @@ class ProfileBoard extends Component {
         </div>
         <div className="profile_container_content">
           <Slider {...settings}>
-            <CaseList>
-              <CaseItem caseNumber="16815" caseClient="Solar" color="red" />
-              <CaseItem caseNumber="17087" caseClient="PSP" color="red" />
-              <CaseItem caseNumber="17412" caseClient="Kof-Br" color="orange" />
-              <CaseItem
-                caseNumber="17298"
-                caseClient="G.Simões"
-                color="green"
-              />
-              <CaseItem caseNumber="18077" caseClient="SHV" color="green" />
-            </CaseList>
-            <CaseList>
-              <CaseItem caseNumber="16815" caseClient="Solar" color="red" />
-              <CaseItem caseNumber="17087" caseClient="PSP" color="red" />
-              <CaseItem caseNumber="17412" caseClient="Kof-Br" color="orange" />
-              <CaseItem
-                caseNumber="17298"
-                caseClient="G.Simões"
-                color="green"
-              />
-              <CaseItem caseNumber="18077" caseClient="SHV" color="green" />
-            </CaseList>
+            <CaseList>{this.extractCases(this.state.cases)}</CaseList>
           </Slider>
         </div>
       </div>
