@@ -40,11 +40,7 @@ const options = {
       type: "pie",
       name: "Today's Cases",
       innerSize: "50%",
-      data: [
-        ["40% - Emergency", 40],
-        ["20% - Critical", 20],
-        ["40% - Normal", 40]
-      ]
+      data: [["Emergency", 10], ["Critical", 10], ["Normal", 80]]
     }
   ]
 };

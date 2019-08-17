@@ -18,20 +18,26 @@ class ProfileBoard extends Component {
 
   extractCases = array => {
     const items = [];
+    let color = "";
     if (array.length > 0) {
       for (const [index, value] of array.entries()) {
+        if (value.casePriority < 50) {
+          color = "green";
+        } else if (value.casePriority >= 50 && value.casePriority < 75) {
+          color = "orange";
+        } else {
+          color = "red";
+        }
         items.push(
           <CaseItem
             key={index}
             caseNumber={value.caseNumber}
             caseClient={value.clientName}
-            color="red"
+            color={color}
           />
         );
       }
     }
-
-    window.array = items;
 
     return items;
   };
@@ -63,16 +69,9 @@ class ProfileBoard extends Component {
       el => el.analystName === this.props.name
     );
 
-    window.g = analystCasesArray;
-
     this.setState({
       cases: analystCasesArray
     });
-
-    window.s = this.state.cases;
-    const array = [...this.state.cases];
-
-    window.l = this.upToGroupOf5Cases(array);
   }
 
   render() {

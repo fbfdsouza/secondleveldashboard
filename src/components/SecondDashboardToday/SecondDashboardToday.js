@@ -4,13 +4,79 @@ import ProfileBoardContainer from "../../components/ProfileBoardContainer/Profil
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import options from "../../utils/chartConfig";
-
+import API from "../../utils/API";
 class SecondDashboardToday extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      priority: {
+        emergency: 0,
+        critical: 0,
+        normal: 0
+      }
+    };
+  }
+
+  async componentDidMount() {
+    const chart = this.refs.chartComponent.chart;
+
+    let emergencyCount = 0,
+      criticalCount = 0,
+      normalCount = 0,
+      casesCount = 0;
+
+    let casesData = await API.get("/cases", {
+      params: {
+        results: 1,
+        inc: "caseNumber,analystName,clientName,casePriority"
+      }
+    });
+
+    casesCount = casesData.data.length;
+    emergencyCount =
+      casesData.data.filter(caseEl => caseEl.casePriority >= 75).length /
+      casesCount;
+    criticalCount =
+      casesData.data.filter(
+        caseEl => caseEl.casePriority >= 50 && caseEl.casePriority < 75
+      ).length / casesCount;
+    normalCount =
+      casesData.data.filter(caseEl => caseEl.casePriority < 50).length /
+      casesCount;
+
+    this.setState({
+      priority: {
+        emergency: emergencyCount * 100,
+        critical: criticalCount * 100,
+        normal: normalCount * 100
+      }
+    });
+
+    chart.series[0].update({
+      data: [
+        [
+          `Emergency : ${(emergencyCount * 100).toFixed(2)}%`,
+          emergencyCount * 100
+        ],
+        [
+          `Critical : ${(criticalCount * 100).toFixed(2)}%`,
+          criticalCount * 100
+        ],
+        [`Normal : ${(normalCount * 100).toFixed(2)}%`, normalCount * 100]
+      ]
+    });
+  }
+
   render() {
     return (
       <div>
         <div className="dummyChart">
-          <HighchartsReact highcharts={Highcharts} options={options} />
+          <HighchartsReact
+            highcharts={Highcharts}
+            options={options}
+            ref={"chartComponent"}
+          />
         </div>
         <ProfileBoardContainer>
           <div className="dummy-graph" />
