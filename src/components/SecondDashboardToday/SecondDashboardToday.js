@@ -34,36 +34,37 @@ class SecondDashboardToday extends Component {
     });
 
     casesCount = casesData.data.length;
-    emergencyCount =
-      casesData.data.filter(caseEl => caseEl.casePriority >= 75).length /
-      casesCount;
-    criticalCount =
-      casesData.data.filter(
-        caseEl => caseEl.casePriority >= 50 && caseEl.casePriority < 75
-      ).length / casesCount;
-    normalCount =
-      casesData.data.filter(caseEl => caseEl.casePriority < 50).length /
-      casesCount;
+
+    emergencyCount = casesData.data.filter(caseEl => caseEl.casePriority >= 75)
+      .length;
+    criticalCount = casesData.data.filter(
+      caseEl => caseEl.casePriority >= 50 && caseEl.casePriority < 75
+    ).length;
+    normalCount = casesData.data.filter(caseEl => caseEl.casePriority < 50)
+      .length;
 
     this.setState({
       priority: {
-        emergency: emergencyCount * 100,
-        critical: criticalCount * 100,
-        normal: normalCount * 100
+        emergency: (emergencyCount / casesCount) * 100,
+        critical: (criticalCount / casesCount) * 100,
+        normal: (normalCount / casesCount) * 100
       }
     });
 
     chart.series[0].update({
       data: [
         [
-          `Emergency : ${(emergencyCount * 100).toFixed(2)}%`,
+          `Emergency : ${((emergencyCount / casesCount) * 100).toFixed(2)}%`,
           emergencyCount * 100
         ],
         [
-          `Critical : ${(criticalCount * 100).toFixed(2)}%`,
+          `Critical : ${((criticalCount / casesCount) * 100).toFixed(2)}%`,
           criticalCount * 100
         ],
-        [`Normal : ${(normalCount * 100).toFixed(2)}%`, normalCount * 100]
+        [
+          `Normal : ${((normalCount / casesCount) * 100).toFixed(2)}%`,
+          normalCount * 100
+        ]
       ]
     });
   }

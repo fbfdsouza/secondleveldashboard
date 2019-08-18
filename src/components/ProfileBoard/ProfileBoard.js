@@ -6,6 +6,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import API from "../../utils/API";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
 class ProfileBoard extends Component {
   constructor(props) {
@@ -19,8 +20,13 @@ class ProfileBoard extends Component {
   extractCases = array => {
     const items = [];
     let color = "";
+
     if (array.length > 0) {
       for (const [index, value] of array.entries()) {
+        let iconDisplay = "block";
+        if (value.checked !== true) {
+          iconDisplay = "none";
+        }
         if (value.casePriority < 50) {
           color = "green";
         } else if (value.casePriority >= 50 && value.casePriority < 75) {
@@ -34,6 +40,8 @@ class ProfileBoard extends Component {
             caseNumber={value.caseNumber}
             caseClient={value.clientName}
             color={color}
+            icon={faCheck}
+            iconDisplay={iconDisplay}
           />
         );
       }

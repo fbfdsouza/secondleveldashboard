@@ -10,4 +10,10 @@
   width: 12px;
   height: 12px;
   border-radius: 1.5px;
+  position: relative;
+}
+
+.svg-inline--fa.fa-check.fa-w-16 {
+  position: relative;
+  top: -3px;
 }
