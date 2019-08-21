@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import "./style/ProfileBoard.css";
-import CaseList from "../CaseList/CaseList";
-import CaseItem from "../CaseItem/CaseItem";
+import CaseList from "../CaseList";
+import CaseItem from "../CaseItem";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import API from "../../utils/API";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { settings } from "../../utils";
 
 class ProfileBoard extends Component {
   constructor(props) {
@@ -83,15 +84,6 @@ class ProfileBoard extends Component {
   }
 
   render() {
-    const settings = {
-      dots: true,
-      infinite: true,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      autoplay: true
-    };
-
     const { children, name, headerColor, borderColor } = this.props;
     return (
       <div className="profile_container" style={{ border: borderColor }}>

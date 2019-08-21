@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import ProfileBoard from "../../components/ProfileBoard/ProfileBoard";
-import ProfileBoardContainer from "../../components/ProfileBoardContainer/ProfileBoardContainer";
+import ProfileBoardContainer from "../../components/ProfileBoardContainer";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import options from "../../utils/chartConfig";
+import { options } from "../../utils/";
 import API from "../../utils/API";
 class SecondDashboardToday extends Component {
   constructor(props) {
