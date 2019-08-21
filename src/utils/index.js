@@ -1,4 +1,5 @@
-const options = {
+//chart options to highcharts
+export const options = {
   chart: {
     plotBackgroundColor: null,
     plotBorderWidth: 0,
@@ -45,4 +46,12 @@ const options = {
   ]
 };
 
-export default options;
+//settings for the Slider Component
+export const settings = {
+  dots: true,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  autoplay: true
+};

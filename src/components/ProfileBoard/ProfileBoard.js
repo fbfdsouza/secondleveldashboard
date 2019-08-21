@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import "./style/ProfileBoard.css";
-import CaseList from "../CaseList/CaseList";
-import CaseItem from "../CaseItem/CaseItem";
+import CaseList from "../CaseList";
+import CaseItem from "../CaseItem";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import API from "../../utils/API";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { settings } from "../../utils";
 
 class ProfileBoard extends Component {
   constructor(props) {
@@ -19,8 +21,13 @@ class ProfileBoard extends Component {
   extractCases = array => {
     const items = [];
     let color = "";
+
     if (array.length > 0) {
       for (const [index, value] of array.entries()) {
+        let iconDisplay = "block";
+        if (value.checked !== true) {
+          iconDisplay = "none";
+        }
         if (value.casePriority < 50) {
           color = "green";
         } else if (value.casePriority >= 50 && value.casePriority < 75) {
@@ -34,6 +41,8 @@ class ProfileBoard extends Component {
             caseNumber={value.caseNumber}
             caseClient={value.clientName}
             color={color}
+            icon={faCheck}
+            iconDisplay={iconDisplay}
           />
         );
       }
@@ -75,15 +84,6 @@ class ProfileBoard extends Component {
   }
 
   render() {
-    const settings = {
-      dots: true,
-      infinite: true,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      autoplay: true
-    };
-
     const { children, name, headerColor, borderColor } = this.props;
     return (
       <div className="profile_container" style={{ border: borderColor }}>
