@@ -1,14 +1,15 @@
 import React from "react";
 import CaseItem from "../CaseItem";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { getColorByPriority } from "../../utils";
 
-const CaseList = ({ children, list }) => {
+const CaseList = ({ list }) => {
   const listCaseItems = list.map((caseInfo, index) => (
     <CaseItem
       key={index}
       caseNumber={caseInfo.caseNumber}
       caseClient={caseInfo.clientName}
-      color={"red"}
+      color={getColorByPriority(caseInfo.casePriority)}
       icon={faCheck}
       iconDisplay={"none"}
     />
@@ -18,13 +19,3 @@ const CaseList = ({ children, list }) => {
 };
 
 export default CaseList;
-
-/*
-<CaseItem
-  key={index}
-  caseNumber={value.caseNumber}
-  caseClient={value.clientName}
-  color={color}
-  icon={faCheck}
-  iconDisplay={iconDisplay}
-/>;*/

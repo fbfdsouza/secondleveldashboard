@@ -15,16 +15,6 @@ class ProfileBoard extends Component {
     };
   }
 
-  getColorByPriority = priority => {
-    if (priority < 50) {
-      return "green";
-    } else if (priority >= 50 && priority < 75) {
-      return "orange";
-    } else {
-      return "red";
-    }
-  };
-
   caseByAnalyst = props => {
     const { casesArray, name } = props;
     if (casesArray.length > 0) {
@@ -35,7 +25,7 @@ class ProfileBoard extends Component {
     }
   };
 
-  CaseList2 = items => {
+  getListOfArraysPerAnalyst = items => {
     let startCaseCounter = 0,
       endCaseCounter = 5,
       increment = 5,
@@ -56,8 +46,6 @@ class ProfileBoard extends Component {
   };
 
   render() {
-    this.CaseList2(this.caseByAnalyst(this.props));
-    //this.caseByAnalyst(this.props);
     const { children, name, headerColor, borderColor, casesArray } = this.props;
     return (
       <div className="profile_container" style={{ border: borderColor }}>
@@ -70,7 +58,9 @@ class ProfileBoard extends Component {
         </div>
         <div className="profile_container_content">
           <Slider {...settings}>
-            {this.CaseList2(this.caseByAnalyst(this.props)).map(item => item)}
+            {this.getListOfArraysPerAnalyst(this.caseByAnalyst(this.props)).map(
+              item => item
+            )}
           </Slider>
         </div>
       </div>

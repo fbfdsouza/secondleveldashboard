@@ -55,3 +55,13 @@ export const settings = {
   slidesToScroll: 1,
   autoplay: true
 };
+
+export const getColorByPriority = priority => {
+  if (priority < 50) {
+    return "green";
+  } else if (priority >= 50 && priority < 75) {
+    return "orange";
+  } else {
+    return "red";
+  }
+};
