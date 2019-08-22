@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import "./style/ProfileBoard.css";
 import CaseList from "../CaseList";
-import CaseItem from "../CaseItem";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { settings } from "../../utils";
 
 class ProfileBoard extends Component {
@@ -27,52 +25,6 @@ class ProfileBoard extends Component {
     }
   };
 
-  upToGroupOf5Cases = array => {
-    let groupOf5 = [],
-      size = 5,
-      caseListIndex = 0;
-
-    while (array.length > 0) {
-      groupOf5.push(
-        <CaseList key={caseListIndex}>{array.splice(0, size)}</CaseList>
-      );
-      caseListIndex++;
-    }
-
-    return groupOf5;
-  };
-
-  extractCases = array => {
-    const items = [];
-    let color = "";
-
-    if (array !== undefined)
-      if (array.length > 0) {
-        for (const [index, value] of array.entries()) {
-          let iconDisplay = "block";
-
-          value.checked === true
-            ? (iconDisplay = "block")
-            : (iconDisplay = "none");
-
-          color = this.getColorByPriority(value.casePriority);
-
-          items.push(
-            <CaseItem
-              key={index}
-              caseNumber={value.caseNumber}
-              caseClient={value.clientName}
-              color={color}
-              icon={faCheck}
-              iconDisplay={iconDisplay}
-            />
-          );
-        }
-      }
-
-    return items;
-  };
-
   caseByAnalyst = props => {
     const { casesArray, name } = props;
     if (casesArray.length > 0) {
@@ -83,7 +35,29 @@ class ProfileBoard extends Component {
     }
   };
 
+  CaseList2 = items => {
+    let startCaseCounter = 0,
+      endCaseCounter = 5,
+      increment = 5,
+      caseListArray = [];
+    if (items !== undefined) {
+      while (startCaseCounter < items.length) {
+        const listUpTo5Cases = items
+          .slice(startCaseCounter, endCaseCounter)
+          .map(caseItem => caseItem);
+        startCaseCounter += increment;
+        endCaseCounter += increment;
+
+        caseListArray.push(<CaseList list={listUpTo5Cases} key={increment} />);
+      }
+    }
+
+    return caseListArray;
+  };
+
   render() {
+    this.CaseList2(this.caseByAnalyst(this.props));
+    //this.caseByAnalyst(this.props);
     const { children, name, headerColor, borderColor, casesArray } = this.props;
     return (
       <div className="profile_container" style={{ border: borderColor }}>
@@ -96,11 +70,7 @@ class ProfileBoard extends Component {
         </div>
         <div className="profile_container_content">
           <Slider {...settings}>
-            {this.upToGroupOf5Cases(
-              this.extractCases(
-                casesArray === undefined ? [] : this.caseByAnalyst(this.props)
-              )
-            )}
+            {this.CaseList2(this.caseByAnalyst(this.props)).map(item => item)}
           </Slider>
         </div>
       </div>
