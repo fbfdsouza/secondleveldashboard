@@ -14,11 +14,12 @@ class SecondDashboardToday extends Component {
         emergency: 0,
         critical: 0,
         normal: 0
-      }
+      },
+      cases: []
     };
   }
 
-  async componentDidMount() {
+  componentDidMount = async prevState => {
     const chart = this.refs.chartComponent.chart;
 
     let emergencyCount = 0,
@@ -43,13 +44,16 @@ class SecondDashboardToday extends Component {
     normalCount = casesData.data.filter(caseEl => caseEl.casePriority < 50)
       .length;
 
-    this.setState({
-      priority: {
-        emergency: (emergencyCount / casesCount) * 100,
-        critical: (criticalCount / casesCount) * 100,
-        normal: (normalCount / casesCount) * 100
-      }
-    });
+    if (prevState !== this.state) {
+      this.setState({
+        priority: {
+          emergency: (emergencyCount / casesCount) * 100,
+          critical: (criticalCount / casesCount) * 100,
+          normal: (normalCount / casesCount) * 100
+        },
+        cases: casesData.data
+      });
+    }
 
     chart.series[0].update({
       data: [
@@ -67,9 +71,10 @@ class SecondDashboardToday extends Component {
         ]
       ]
     });
-  }
+  };
 
   render() {
+    const { cases } = this.state;
     return (
       <div>
         <div className="dummyChart">
@@ -85,6 +90,7 @@ class SecondDashboardToday extends Component {
             name="Priscilla Castro"
             headerColor="#fee9fa"
             borderColor="2px solid #fbb9ee"
+            casesArray={cases}
           >
             <img src={require("../../images/pri.jpg")} alt="pri" />
           </ProfileBoard>
@@ -92,6 +98,7 @@ class SecondDashboardToday extends Component {
             name="João Vieira"
             headerColor="#c7dfb1"
             borderColor="2px solid #44d1a6"
+            casesArray={cases}
           >
             <img src={require("../../images/joao.jpg")} alt="joao" />
           </ProfileBoard>
@@ -99,6 +106,7 @@ class SecondDashboardToday extends Component {
             name="Isaac Silva"
             headerColor="#ccf3e7"
             borderColor="2px solid #a3e9d4"
+            casesArray={cases}
           >
             <img src={require("../../images/isaac.jpg")} alt="isaac" />
           </ProfileBoard>
@@ -106,6 +114,7 @@ class SecondDashboardToday extends Component {
             name="Bruno Filgueiras"
             headerColor="#edefb8"
             borderColor="2px solid #c1bc5e"
+            casesArray={cases}
           >
             <img src={require("../../images/bruno.jpg")} alt="bruno" />
           </ProfileBoard>

@@ -1,12 +1,9 @@
 import React, { Component } from "react";
 import "./style/ProfileBoard.css";
 import CaseList from "../CaseList";
-import CaseItem from "../CaseItem";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import API from "../../utils/API";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { settings } from "../../utils";
 
 class ProfileBoard extends Component {
@@ -18,73 +15,38 @@ class ProfileBoard extends Component {
     };
   }
 
-  extractCases = array => {
-    const items = [];
-    let color = "";
-
-    if (array.length > 0) {
-      for (const [index, value] of array.entries()) {
-        let iconDisplay = "block";
-        if (value.checked !== true) {
-          iconDisplay = "none";
-        }
-        if (value.casePriority < 50) {
-          color = "green";
-        } else if (value.casePriority >= 50 && value.casePriority < 75) {
-          color = "orange";
-        } else {
-          color = "red";
-        }
-        items.push(
-          <CaseItem
-            key={index}
-            caseNumber={value.caseNumber}
-            caseClient={value.clientName}
-            color={color}
-            icon={faCheck}
-            iconDisplay={iconDisplay}
-          />
-        );
-      }
-    }
-
-    return items;
-  };
-
-  upToGroupOf5Cases = array => {
-    let groupOf5 = [],
-      size = 5,
-      caseListIndex = 0;
-
-    while (array.length > 0) {
-      groupOf5.push(
-        <CaseList key={caseListIndex}>{array.splice(0, size)}</CaseList>
+  caseByAnalyst = props => {
+    const { casesArray, name } = props;
+    if (casesArray.length > 0) {
+      const analystCasesArray = casesArray.filter(
+        el => el.analystName === name
       );
-      caseListIndex++;
+      return analystCasesArray;
     }
-
-    return groupOf5;
   };
 
-  async componentDidMount() {
-    let casesData = await API.get("/cases", {
-      params: {
-        results: 1,
-        inc: "caseNumber,analystName,clientName,casePriority"
+  getListOfArraysPerAnalyst = items => {
+    let startCaseCounter = 0,
+      endCaseCounter = 5,
+      increment = 5,
+      caseListArray = [];
+    if (items !== undefined) {
+      while (startCaseCounter < items.length) {
+        const listUpTo5Cases = items
+          .slice(startCaseCounter, endCaseCounter)
+          .map(caseItem => caseItem);
+        startCaseCounter += increment;
+        endCaseCounter += increment;
+
+        caseListArray.push(<CaseList list={listUpTo5Cases} key={increment} />);
       }
-    });
+    }
 
-    const analystCasesArray = casesData.data.filter(
-      el => el.analystName === this.props.name
-    );
-
-    this.setState({
-      cases: analystCasesArray
-    });
-  }
+    return caseListArray;
+  };
 
   render() {
-    const { children, name, headerColor, borderColor } = this.props;
+    const { children, name, headerColor, borderColor, casesArray } = this.props;
     return (
       <div className="profile_container" style={{ border: borderColor }}>
         <div
@@ -96,7 +58,9 @@ class ProfileBoard extends Component {
         </div>
         <div className="profile_container_content">
           <Slider {...settings}>
-            {this.upToGroupOf5Cases(this.extractCases(this.state.cases))}
+            {this.getListOfArraysPerAnalyst(this.caseByAnalyst(this.props)).map(
+              item => item
+            )}
           </Slider>
         </div>
       </div>
