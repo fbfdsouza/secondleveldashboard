@@ -9,7 +9,10 @@ const CaseItem = ({ caseNumber, caseClient, color, icon, iconDisplay }) => {
         {caseNumber} - {caseClient}
       </div>
       <div className="priorityLevel" style={{ backgroundColor: color }}>
-        <FontAwesomeIcon icon={icon} style={{ display: iconDisplay }} />
+        <FontAwesomeIcon
+          icon={icon}
+          style={{ display: iconDisplay === true ? "block" : "none" }}
+        />
       </div>
     </li>
   );

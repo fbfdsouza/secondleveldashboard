@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ProfileBoard from "../../components/ProfileBoard/ProfileBoard";
+import ProfileBoard from "../../components/ProfileBoard";
 import ProfileBoardContainer from "../../components/ProfileBoardContainer";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
