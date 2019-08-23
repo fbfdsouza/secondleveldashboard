@@ -46,7 +46,7 @@ class ProfileBoard extends Component {
   };
 
   render() {
-    const { children, name, headerColor, borderColor, casesArray } = this.props;
+    const { children, name, headerColor, borderColor } = this.props;
     return (
       <div className="profile_container" style={{ border: borderColor }}>
         <div
