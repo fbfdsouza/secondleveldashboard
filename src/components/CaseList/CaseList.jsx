@@ -13,7 +13,7 @@ const CaseList = ({ list }) => {
           caseClient={caseInfo.clientName}
           color={getColorByPriority(caseInfo.casePriority)}
           icon={faCheck}
-          iconDisplay={false}
+          iconDisplay={caseInfo.checked}
         />
       ))}
     </ul>

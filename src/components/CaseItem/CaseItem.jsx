@@ -6,7 +6,7 @@ const CaseItem = ({ caseNumber, caseClient, color, icon, iconDisplay }) => {
   return (
     <li className="caseItem">
       <div>
-        {caseNumber} - {caseClient}
+        {caseNumber} - {caseClient.slice(0, 9)}
       </div>
       <div className="priorityLevel" style={{ backgroundColor: color }}>
         <FontAwesomeIcon

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import "./style/ProfileBoard.css";
 import CaseList from "../CaseList";
 import Slider from "react-slick";
@@ -6,7 +6,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { settings } from "../../utils";
 
-class ProfileBoard extends Component {
+class ProfileBoard extends PureComponent {
   constructor(props) {
     super(props);
 

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
@@ -110,7 +110,7 @@ const options = {
     }
   ]
 };
-class MonthDashBoard extends Component {
+class MonthDashBoard extends PureComponent {
   render() {
     return (
       <div>

@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import ProfileBoard from "../../components/ProfileBoard";
 import ProfileBoardContainer from "../../components/ProfileBoardContainer";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { options } from "../../utils/";
-import API from "../../utils/API";
-class SecondDashboardToday extends Component {
+import { springCases, sfAPI } from "../../utils/API";
+class SecondDashboardToday extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -27,14 +27,21 @@ class SecondDashboardToday extends Component {
       normalCount = 0,
       casesCount = 0;
 
-    let casesData = await API.get("/cases", {
+    let casesData = await springCases.get("/cases", {
       params: {
         results: 1,
         inc: "caseNumber,analystName,clientName,casePriority"
       }
     });
 
-    casesCount = casesData.data.length;
+    let casesSalesForce = await sfAPI.post(
+      "/casesAssigned",
+      casesData.data.map(item => item.caseNumber)
+    );
+
+    this.setCheckedCases(casesSalesForce.data, casesData.data);
+
+    window.casesData = casesData;
 
     emergencyCount = casesData.data.filter(caseEl => caseEl.casePriority >= 75)
       .length;
@@ -43,14 +50,10 @@ class SecondDashboardToday extends Component {
     ).length;
     normalCount = casesData.data.filter(caseEl => caseEl.casePriority < 50)
       .length;
+    casesCount = casesData.data.length;
 
     if (prevState !== this.state) {
       this.setState({
-        priority: {
-          emergency: (emergencyCount / casesCount) * 100,
-          critical: (criticalCount / casesCount) * 100,
-          normal: (normalCount / casesCount) * 100
-        },
         cases: casesData.data
       });
     }
@@ -70,6 +73,19 @@ class SecondDashboardToday extends Component {
           normalCount * 100
         ]
       ]
+    });
+  };
+
+  setCheckedCases = (salesForceArray, ourCaseListArray) => {
+    ourCaseListArray.forEach(caseItem => {
+      caseItem.checked =
+        salesForceArray.filter(
+          itemSF => itemSF.caseNumber === caseItem.caseNumber
+        )[0] !== undefined
+          ? salesForceArray.filter(
+              itemSF => itemSF.caseNumber === caseItem.caseNumber
+            )[0].checked
+          : false;
     });
   };
 
