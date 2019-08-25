@@ -1,10 +1,12 @@
 import React, { PureComponent } from "react";
 import ProfileBoard from "../../components/ProfileBoard";
-import ProfileBoardContainer from "../../components/ProfileBoardContainer";
+import ProfileBoardContainer from "../../containers/ProfileBoardContainer";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { options } from "../../utils/";
 import { springCases, sfAPI } from "../../utils/API";
+import "./style/SecondDashboardToday.css";
+
 class SecondDashboardToday extends PureComponent {
   constructor(props) {
     super(props);
@@ -95,40 +97,43 @@ class SecondDashboardToday extends PureComponent {
             ref={"chartComponent"}
           />
         </div>
+
         <ProfileBoardContainer>
-          <div className="dummy-graph" />
-          <ProfileBoard
-            name="Priscilla Castro"
-            headerColor="#fee9fa"
-            borderColor="2px solid #fbb9ee"
-            casesArray={cases}
-          >
-            <img src={require("../../images/pri.jpg")} alt="pri" />
-          </ProfileBoard>
-          <ProfileBoard
-            name="João Vieira"
-            headerColor="#c7dfb1"
-            borderColor="2px solid #44d1a6"
-            casesArray={cases}
-          >
-            <img src={require("../../images/joao.jpg")} alt="joao" />
-          </ProfileBoard>
-          <ProfileBoard
-            name="Isaac Silva"
-            headerColor="#ccf3e7"
-            borderColor="2px solid #a3e9d4"
-            casesArray={cases}
-          >
-            <img src={require("../../images/isaac.jpg")} alt="isaac" />
-          </ProfileBoard>
-          <ProfileBoard
-            name="Bruno Filgueiras"
-            headerColor="#edefb8"
-            borderColor="2px solid #c1bc5e"
-            casesArray={cases}
-          >
-            <img src={require("../../images/bruno.jpg")} alt="bruno" />
-          </ProfileBoard>
+          <div className="profileBoardContainer">
+            <div className="dummy-graph" />
+            <ProfileBoard
+              name="Priscilla Castro"
+              headerColor="#fee9fa"
+              borderColor="2px solid #fbb9ee"
+              casesArray={cases}
+            >
+              <img src={require("../../images/pri.jpg")} alt="pri" />
+            </ProfileBoard>
+            <ProfileBoard
+              name="João Vieira"
+              headerColor="#c7dfb1"
+              borderColor="2px solid #44d1a6"
+              casesArray={cases}
+            >
+              <img src={require("../../images/joao.jpg")} alt="joao" />
+            </ProfileBoard>
+            <ProfileBoard
+              name="Isaac Silva"
+              headerColor="#ccf3e7"
+              borderColor="2px solid #a3e9d4"
+              casesArray={cases}
+            >
+              <img src={require("../../images/isaac.jpg")} alt="isaac" />
+            </ProfileBoard>
+            <ProfileBoard
+              name="Bruno Filgueiras"
+              headerColor="#edefb8"
+              borderColor="2px solid #c1bc5e"
+              casesArray={cases}
+            >
+              <img src={require("../../images/bruno.jpg")} alt="bruno" />
+            </ProfileBoard>
+          </div>
         </ProfileBoardContainer>
       </div>
     );
