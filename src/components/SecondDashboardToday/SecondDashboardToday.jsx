@@ -10,11 +10,6 @@ class SecondDashboardToday extends PureComponent {
     super(props);
 
     this.state = {
-      priority: {
-        emergency: 0,
-        critical: 0,
-        normal: 0
-      },
       cases: []
     };
   }
