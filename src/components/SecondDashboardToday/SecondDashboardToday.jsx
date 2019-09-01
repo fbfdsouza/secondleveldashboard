@@ -17,36 +17,39 @@ class SecondDashboardToday extends PureComponent {
   }
 
   componentDidMount = () => {
+    this.makeApiRequestForCases();
     setInterval(async () => {
-      let casesData = await springCases.get("/cases", {
-        params: {
-          results: 1,
-          inc: "caseNumber,analystName,clientName,casePriority"
-        }
-      });
+      this.makeApiRequestForCases();
+    }, 600000);
+  };
 
-      console.log("Pode me chamar que eu vou");
+  makeApiRequestForCases = async () => {
+    let casesData = await springCases.get("/cases", {
+      params: {
+        results: 1,
+        inc: "caseNumber,analystName,clientName,casePriority"
+      }
+    });
 
-      let casesSalesForce = await sfAPI.post(
-        "/casesAssigned",
-        casesData.data.map(item => item.caseNumber)
-      );
+    let casesSalesForce = await sfAPI.post(
+      "/casesAssigned",
+      casesData.data.map(item => item.caseNumber)
+    );
 
-      this.setCheckedCases(casesSalesForce.data, casesData.data);
+    this.setCheckedCases(casesSalesForce.data, casesData.data);
 
-      const priorityCases = this.separateCasesByPriority(casesData.data);
+    const priorityCases = this.separateCasesByPriority(casesData.data);
 
-      this.updateChart(
-        priorityCases.emergencyCount,
-        priorityCases.criticalCount,
-        priorityCases.normalCount,
-        priorityCases.casesCount
-      );
+    this.updateChart(
+      priorityCases.emergencyCount,
+      priorityCases.criticalCount,
+      priorityCases.normalCount,
+      priorityCases.casesCount
+    );
 
-      this.setState({
-        cases: casesData.data
-      });
-    }, 10000);
+    this.setState({
+      cases: casesData.data
+    });
   };
 
   separateCasesByPriority = cases => {
