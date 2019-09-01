@@ -17,13 +17,6 @@ class SecondDashboardToday extends PureComponent {
   }
 
   componentDidMount = async prevState => {
-    const chart = this.refs.chartComponent.chart;
-
-    let emergencyCount = 0,
-      criticalCount = 0,
-      normalCount = 0,
-      casesCount = 0;
-
     let casesData = await springCases.get("/cases", {
       params: {
         results: 1,
@@ -38,16 +31,7 @@ class SecondDashboardToday extends PureComponent {
 
     this.setCheckedCases(casesSalesForce.data, casesData.data);
 
-    window.casesData = casesData;
-
-    emergencyCount = casesData.data.filter(caseEl => caseEl.casePriority >= 75)
-      .length;
-    criticalCount = casesData.data.filter(
-      caseEl => caseEl.casePriority >= 50 && caseEl.casePriority < 75
-    ).length;
-    normalCount = casesData.data.filter(caseEl => caseEl.casePriority < 50)
-      .length;
-    casesCount = casesData.data.length;
+    const priorityCases = this.separateCasesByPriority(casesData.data);
 
     if (prevState !== this.state) {
       this.setState({
@@ -55,6 +39,28 @@ class SecondDashboardToday extends PureComponent {
       });
     }
 
+    this.updateChart(
+      priorityCases.emergencyCount,
+      priorityCases.criticalCount,
+      priorityCases.normalCount,
+      priorityCases.casesCount
+    );
+  };
+
+  separateCasesByPriority = cases => {
+    const emergencyCount = cases.filter(caseEl => caseEl.casePriority >= 75)
+      .length;
+    const criticalCount = cases.filter(
+      caseEl => caseEl.casePriority >= 50 && caseEl.casePriority < 75
+    ).length;
+    const normalCount = cases.filter(caseEl => caseEl.casePriority < 50).length;
+    const casesCount = cases.length;
+
+    return { emergencyCount, criticalCount, normalCount, casesCount };
+  };
+
+  updateChart = (emergencyCount, criticalCount, normalCount, casesCount) => {
+    const chart = this.refs.chartComponent.chart;
     chart.series[0].update({
       data: [
         [
