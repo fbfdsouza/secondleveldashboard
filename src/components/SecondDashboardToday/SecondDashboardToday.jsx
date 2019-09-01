@@ -16,35 +16,37 @@ class SecondDashboardToday extends PureComponent {
     };
   }
 
-  componentDidMount = async prevState => {
-    let casesData = await springCases.get("/cases", {
-      params: {
-        results: 1,
-        inc: "caseNumber,analystName,clientName,casePriority"
-      }
-    });
+  componentDidMount = () => {
+    setInterval(async () => {
+      let casesData = await springCases.get("/cases", {
+        params: {
+          results: 1,
+          inc: "caseNumber,analystName,clientName,casePriority"
+        }
+      });
 
-    let casesSalesForce = await sfAPI.post(
-      "/casesAssigned",
-      casesData.data.map(item => item.caseNumber)
-    );
+      console.log("Pode me chamar que eu vou");
 
-    this.setCheckedCases(casesSalesForce.data, casesData.data);
+      let casesSalesForce = await sfAPI.post(
+        "/casesAssigned",
+        casesData.data.map(item => item.caseNumber)
+      );
 
-    const priorityCases = this.separateCasesByPriority(casesData.data);
+      this.setCheckedCases(casesSalesForce.data, casesData.data);
 
-    if (prevState !== this.state) {
+      const priorityCases = this.separateCasesByPriority(casesData.data);
+
+      this.updateChart(
+        priorityCases.emergencyCount,
+        priorityCases.criticalCount,
+        priorityCases.normalCount,
+        priorityCases.casesCount
+      );
+
       this.setState({
         cases: casesData.data
       });
-    }
-
-    this.updateChart(
-      priorityCases.emergencyCount,
-      priorityCases.criticalCount,
-      priorityCases.normalCount,
-      priorityCases.casesCount
-    );
+    }, 10000);
   };
 
   separateCasesByPriority = cases => {
