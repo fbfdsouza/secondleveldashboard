@@ -1,10 +1,12 @@
 import React, { PureComponent } from "react";
 import ProfileBoard from "../../components/ProfileBoard";
-import ProfileBoardContainer from "../../components/ProfileBoardContainer";
+import ProfileBoardContainer from "../../containers/ProfileBoardContainer";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { options } from "../../utils/";
 import { springCases, sfAPI } from "../../utils/API";
+import "./style/SecondDashboardToday.css";
+
 class SecondDashboardToday extends PureComponent {
   constructor(props) {
     super(props);
@@ -14,14 +16,14 @@ class SecondDashboardToday extends PureComponent {
     };
   }
 
-  componentDidMount = async prevState => {
-    const chart = this.refs.chartComponent.chart;
+  componentDidMount = () => {
+    this.makeApiRequestForCases();
+    setInterval(async () => {
+      this.makeApiRequestForCases();
+    }, 600000);
+  };
 
-    let emergencyCount = 0,
-      criticalCount = 0,
-      normalCount = 0,
-      casesCount = 0;
-
+  makeApiRequestForCases = async () => {
     let casesData = await springCases.get("/cases", {
       params: {
         results: 1,
@@ -36,23 +38,34 @@ class SecondDashboardToday extends PureComponent {
 
     this.setCheckedCases(casesSalesForce.data, casesData.data);
 
-    window.casesData = casesData;
+    const priorityCases = this.separateCasesByPriority(casesData.data);
 
-    emergencyCount = casesData.data.filter(caseEl => caseEl.casePriority >= 75)
+    this.updateChart(
+      priorityCases.emergencyCount,
+      priorityCases.criticalCount,
+      priorityCases.normalCount,
+      priorityCases.casesCount
+    );
+
+    this.setState({
+      cases: casesData.data
+    });
+  };
+
+  separateCasesByPriority = cases => {
+    const emergencyCount = cases.filter(caseEl => caseEl.casePriority >= 75)
       .length;
-    criticalCount = casesData.data.filter(
+    const criticalCount = cases.filter(
       caseEl => caseEl.casePriority >= 50 && caseEl.casePriority < 75
     ).length;
-    normalCount = casesData.data.filter(caseEl => caseEl.casePriority < 50)
-      .length;
-    casesCount = casesData.data.length;
+    const normalCount = cases.filter(caseEl => caseEl.casePriority < 50).length;
+    const casesCount = cases.length;
 
-    if (prevState !== this.state) {
-      this.setState({
-        cases: casesData.data
-      });
-    }
+    return { emergencyCount, criticalCount, normalCount, casesCount };
+  };
 
+  updateChart = (emergencyCount, criticalCount, normalCount, casesCount) => {
+    const chart = this.refs.chartComponent.chart;
     chart.series[0].update({
       data: [
         [
@@ -95,40 +108,43 @@ class SecondDashboardToday extends PureComponent {
             ref={"chartComponent"}
           />
         </div>
+
         <ProfileBoardContainer>
-          <div className="dummy-graph" />
-          <ProfileBoard
-            name="Priscilla Castro"
-            headerColor="#fee9fa"
-            borderColor="2px solid #fbb9ee"
-            casesArray={cases}
-          >
-            <img src={require("../../images/pri.jpg")} alt="pri" />
-          </ProfileBoard>
-          <ProfileBoard
-            name="João Vieira"
-            headerColor="#c7dfb1"
-            borderColor="2px solid #44d1a6"
-            casesArray={cases}
-          >
-            <img src={require("../../images/joao.jpg")} alt="joao" />
-          </ProfileBoard>
-          <ProfileBoard
-            name="Isaac Silva"
-            headerColor="#ccf3e7"
-            borderColor="2px solid #a3e9d4"
-            casesArray={cases}
-          >
-            <img src={require("../../images/isaac.jpg")} alt="isaac" />
-          </ProfileBoard>
-          <ProfileBoard
-            name="Bruno Filgueiras"
-            headerColor="#edefb8"
-            borderColor="2px solid #c1bc5e"
-            casesArray={cases}
-          >
-            <img src={require("../../images/bruno.jpg")} alt="bruno" />
-          </ProfileBoard>
+          <div className="profileBoardContainer">
+            <div className="dummy-graph" />
+            <ProfileBoard
+              name="Priscilla Castro"
+              headerColor="#fee9fa"
+              borderColor="2px solid #fbb9ee"
+              casesArray={cases}
+            >
+              <img src={require("../../images/pri.jpg")} alt="pri" />
+            </ProfileBoard>
+            <ProfileBoard
+              name="João Vieira"
+              headerColor="#c7dfb1"
+              borderColor="2px solid #44d1a6"
+              casesArray={cases}
+            >
+              <img src={require("../../images/joao.jpg")} alt="joao" />
+            </ProfileBoard>
+            <ProfileBoard
+              name="Isaac Silva"
+              headerColor="#ccf3e7"
+              borderColor="2px solid #a3e9d4"
+              casesArray={cases}
+            >
+              <img src={require("../../images/isaac.jpg")} alt="isaac" />
+            </ProfileBoard>
+            <ProfileBoard
+              name="Bruno Filgueiras"
+              headerColor="#edefb8"
+              borderColor="2px solid #c1bc5e"
+              casesArray={cases}
+            >
+              <img src={require("../../images/bruno.jpg")} alt="bruno" />
+            </ProfileBoard>
+          </div>
         </ProfileBoardContainer>
       </div>
     );
