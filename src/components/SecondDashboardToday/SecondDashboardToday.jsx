@@ -33,7 +33,7 @@ class SecondDashboardToday extends PureComponent {
 
     let casesSalesForce = await sfAPI.post(
       "/casesAssigned",
-      casesData.data.map(item => item.caseNumber)
+      casesData.data.map((item) => item.caseNumber)
     );
 
     this.setCheckedCases(casesSalesForce.data, casesData.data);
@@ -52,13 +52,14 @@ class SecondDashboardToday extends PureComponent {
     });
   };
 
-  separateCasesByPriority = cases => {
-    const emergencyCount = cases.filter(caseEl => caseEl.casePriority >= 75)
+  separateCasesByPriority = (cases) => {
+    const emergencyCount = cases.filter((caseEl) => caseEl.casePriority >= 75)
       .length;
     const criticalCount = cases.filter(
-      caseEl => caseEl.casePriority >= 50 && caseEl.casePriority < 75
+      (caseEl) => caseEl.casePriority >= 50 && caseEl.casePriority < 75
     ).length;
-    const normalCount = cases.filter(caseEl => caseEl.casePriority < 50).length;
+    const normalCount = cases.filter((caseEl) => caseEl.casePriority < 50)
+      .length;
     const casesCount = cases.length;
 
     return { emergencyCount, criticalCount, normalCount, casesCount };
@@ -85,13 +86,13 @@ class SecondDashboardToday extends PureComponent {
   };
 
   setCheckedCases = (salesForceArray, ourCaseListArray) => {
-    ourCaseListArray.forEach(caseItem => {
+    ourCaseListArray.forEach((caseItem) => {
       caseItem.checked =
         salesForceArray.filter(
-          itemSF => itemSF.caseNumber === caseItem.caseNumber
+          (itemSF) => itemSF.caseNumber === caseItem.caseNumber
         )[0] !== undefined
           ? salesForceArray.filter(
-              itemSF => itemSF.caseNumber === caseItem.caseNumber
+              (itemSF) => itemSF.caseNumber === caseItem.caseNumber
             )[0].checked
           : false;
     });

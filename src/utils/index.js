@@ -56,7 +56,7 @@ export const settings = {
   autoplay: true
 };
 
-export const getColorByPriority = priority => {
+export const getColorByPriority = (priority) => {
   if (priority < 50) {
     return "green";
   } else if (priority >= 50 && priority < 75) {

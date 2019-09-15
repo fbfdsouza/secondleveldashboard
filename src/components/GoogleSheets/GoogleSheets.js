@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import RoboChart from '@postlight/react-google-sheet-to-chart';
-import './style/GoogleSheets.css';
+import React, { Component } from "react";
+import RoboChart from "@postlight/react-google-sheet-to-chart";
+import "./style/GoogleSheets.css";
 
-const style = { width: '1200px', margin: '0 auto' };
+const style = { width: "1200px", margin: "0 auto" };
 class GoogleSheets extends Component {
   render() {
     return (

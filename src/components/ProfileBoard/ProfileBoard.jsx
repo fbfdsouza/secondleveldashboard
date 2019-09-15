@@ -15,17 +15,17 @@ class ProfileBoard extends PureComponent {
     };
   }
 
-  caseByAnalyst = props => {
+  caseByAnalyst = (props) => {
     const { casesArray, name } = props;
     if (casesArray.length > 0) {
       const analystCasesArray = casesArray.filter(
-        el => el.analystName === name
+        (el) => el.analystName === name
       );
       return analystCasesArray;
     }
   };
 
-  getListOfArraysPerAnalyst = items => {
+  getListOfArraysPerAnalyst = (items) => {
     let startCaseCounter = 0,
       endCaseCounter = 5,
       increment = 5,
@@ -34,7 +34,7 @@ class ProfileBoard extends PureComponent {
       while (startCaseCounter < items.length) {
         const listUpTo5Cases = items
           .slice(startCaseCounter, endCaseCounter)
-          .map(caseItem => caseItem);
+          .map((caseItem) => caseItem);
         startCaseCounter += increment;
         endCaseCounter += increment;
 
@@ -59,7 +59,7 @@ class ProfileBoard extends PureComponent {
         <div className="profile_container_content">
           <Slider {...settings}>
             {this.getListOfArraysPerAnalyst(this.caseByAnalyst(this.props)).map(
-              item => item
+              (item) => item
             )}
           </Slider>
         </div>
