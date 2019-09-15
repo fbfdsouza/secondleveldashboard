@@ -10,7 +10,7 @@ const CaseList = ({ list }) => {
         <CaseItem
           key={index}
           caseNumber={caseInfo.caseNumber}
-          caseClient={caseInfo.clientName}
+          caseClient={caseInfo.clientName.substring(0,7)}
           color={getColorByPriority(caseInfo.casePriority)}
           icon={faCheck}
           iconDisplay={caseInfo.checked}
