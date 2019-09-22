@@ -20,8 +20,8 @@ export const slideOutLeft = keyframes`
 
   to {
     visibility: hidden;
-    -webkit-transform: translate3d(-100%, 0, 0);
-    transform: translate3d(-100%, 0, 0);
+    -webkit-transform: translate3d(-1000%, 0, 0);
+    transform: translate3d(-1000%, 0, 0);
   }
 `;
 
@@ -70,9 +70,9 @@ export const Page = styled.div`
 
 export const Slide = styled(Page)`
   &.page-enter {
-    animation: ${slideInLeft} 4s forwards;
+    animation: ${slideInLeft} 6s forwards;
   }
   &.page-exit {
-    animation: ${slideOutLeft} 4s forwards;
+    animation: ${slideOutLeft} 6s forwards;
   }
 `;
