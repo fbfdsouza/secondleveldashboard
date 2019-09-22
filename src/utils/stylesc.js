@@ -1,3 +1,7 @@
+/*Inspiration for the code was found here:
+https://codesandbox.io/s/lrxmv7304l
+https://veerasundar.com/blog/2018/12/how-to-animate-page-transition-in-react-using-styled-components/
+*/
 import styled, { keyframes } from "styled-components";
 
 export const slideInLeft = keyframes`
