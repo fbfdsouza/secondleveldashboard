@@ -18,7 +18,7 @@ class AppContainer extends Component {
                 <PageContainer>
                   <TransitionGroup component={null}>
                     <CSSTransition
-                      timeout={300}
+                      timeout={4000}
                       classNames="page"
                       key={location.key}
                     >

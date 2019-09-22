@@ -70,9 +70,9 @@ export const Page = styled.div`
 
 export const Slide = styled(Page)`
   &.page-enter {
-    animation: ${slideInLeft} 6s forwards;
+    animation: ${slideInLeft} 2s forwards;
   }
   &.page-exit {
-    animation: ${slideOutLeft} 6s forwards;
+    animation: ${slideOutLeft} 2s forwards;
   }
 `;
