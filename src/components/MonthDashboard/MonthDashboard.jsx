@@ -4,112 +4,69 @@ import HighchartsReact from "highcharts-react-official";
 
 const options = {
   chart: {
-    height: 650,
-    type: "line"
+    type: 'column'
   },
   title: {
-    text: "Second Level DashBoard"
+    text: 'Cases analysed in {Month}'
   },
-  subtitle: {
-    text: "This month's cases"
+  xAxis: {
+    type: 'category'
   },
   yAxis: {
     title: {
-      text: "Quantity"
+      text: 'Total cases analysed per month'
     }
+
   },
-  xAxis: {
-    title: {
-      text: "Days"
-    }
+  legend: {
+    enabled: false
   },
   plotOptions: {
     series: {
-      label: {
-        connectorAllowed: false
-      },
-      pointStart: 1
-    },
-    line: {
+      borderWidth: 0,
       dataLabels: {
-        enabled: true
-      },
-      enableMouseTracking: false
+        enabled: true,
+        format: '{point.y:.1f}%'
+      }
     }
   },
+
   series: [
     {
-      name: "Pending Cases",
+      name: "Browsers",
+      colorByPoint: true,
       data: [
-        [1, 5],
-        [2, 7],
-        [3, 17],
-        [4, 20],
-        [5, 24],
-        [6, 30],
-        [7, 32],
-        [8, 40],
-        [9, 50],
-        [10, 55],
-        [11, 62],
-        [12, 67],
-        [13, 68],
-        [14, 72],
-        [15, 81],
-        [16, 85],
-        [17, 98],
-        [18, 122],
-        [19, 122],
-        [20, 112],
-        [21, 118],
-        [22, 119],
-        [23, 120],
-        [24, 133],
-        [25, 134],
-        [26, 149],
-        [27, 152],
-        [28, 161],
-        [29, 170],
-        [30, 169]
-      ]
-    },
-    {
-      name: "Return to Dev",
-      data: [
-        [1, 5],
-        [2, 2],
-        [3, 17],
-        [4, 5],
-        [5, 3],
-        [6, 15],
-        [7, 17],
-        [8, 22],
-        [9, 28],
-        [10, 25],
-        [11, 24],
-        [12, 12],
-        [13, 16],
-        [14, 18],
-        [15, 21],
-        [16, 22],
-        [17, 22],
-        [18, 22],
-        [19, 22],
-        [20, 22],
-        [21, 18],
-        [22, 19],
-        [23, 20],
-        [24, 18],
-        [25, 19],
-        [26, 20],
-        [27, 16],
-        [28, 15],
-        [29, 12],
-        [30, 10]
+        {
+          name: "Month",
+          y: 62.74,
+          drilldown: "Month"
+        },
+        {
+          name: "Isaac Silva",
+          y: 10.57,
+          drilldown: "Isaac Silva"
+        },
+        {
+          name: "Priscilla Castro",
+          y: 7.23,
+          drilldown: "Priscilla Castro"
+        },
+        {
+          name: "João Vieira",
+          y: 5.58,
+          drilldown: "João Vieira"
+        },
+        {
+          name: "Bruno Filgueiras",
+          y: 4.02,
+          drilldown: "Bruno Filgueiras"
+        }
       ]
     }
   ]
-};
+}
+
+
 class MonthDashBoard extends PureComponent {
   render() {
     return (
